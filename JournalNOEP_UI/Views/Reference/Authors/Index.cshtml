@@ -1,0 +1,132 @@
+﻿@model ReferenceViewModel
+
+
+<link href="~/lib/datatables/jquery.dataTables.css" rel="stylesheet">
+
+<div id="modDialog" class="modal fade">
+
+</div>
+<div class="sh-pagetitle-left">
+    <div class="sh-pagetitle-icon"><i class="icon ion-ios-people mg-t-3"></i></div>
+    <div class="sh-pagetitle-title">
+        <span>Администратор журнала</span>
+        <h2>Авторы</h2>
+    </div><!-- sh-pagetitle-left-title -->
+</div><!-- sh-pagetitle-left -->
+@{ int i = 0; }
+
+<div class="card bd-primary mg-t-20">
+    <div class="card-header bg-primary tx-white">
+        <div class="row">
+            <div class="col-sm-7  align-self-center">
+                <i style="font-size:26px" class="icon ion-ios-people-outline"></i>
+                Список авторов журнала
+            </div>
+            <div class="col-sm-5 text-right">
+                <a href="#" class="btn btn-outline-secondary" data-toggle="modal" data-target="#dialogContent" id="data-add-author-modal">
+                    <i class="fa fa-plus mg-r-10"></i>
+                    Добавить
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body pd-sm-30">
+
+        <div class="table-wrapper">
+            <table id="datatable1" class="table display responsive ">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Список авторов журнала</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SprJoiurnalAuthorsList)
+                    {
+                        <tr class="gradeX">
+                            <td>
+                                @(i = i + 1)
+                            </td>
+                            <td>
+                                <span style="font-size:14px; font-weight:bold;">@item.AuthFio</span> <br />
+                                <span data-authregal style="font-size:12px">@item.AuthRegal</span>
+                                <div>
+                                    <span style="font-size:11px; font-weight:bold;">@item.AuthFioEng</span> <br />
+                                    <span data-authregal style="font-size:10px">@item.AuthRegalEng</span>
+                                </div>
+                            </td>
+                            <td style="width:100px">
+                                <a href="#" class="btn btn-outline-primary btn-icon mg-r-5" data-editclick data-id="@item.Id">
+                                    <div>
+                                        <i class="icon ion-edit"></i>
+                                    </div>
+                                </a>
+                                <a href="#" class="btn btn-outline-danger btn-icon mg-r-5" data-removeclick data-id="@item.Id">
+                                    <div>
+                                        <i class="icon ion-trash-a"></i>
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/lib/datatables/jquery.dataTables.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#datatable1').DataTable({
+            "language": {
+            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Russian.json"
+        }
+        } );
+
+    });
+
+    $('#data-add-author-modal').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("PartialEditAuthor", "Reference")",
+            success: function (content) {
+                $('#modDialog').html(content);
+                $('#modDialog').modal('show');
+            }
+        });
+    });
+        $('[data-editclick]').click(function (e) {
+        e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("PartialEditAuthor", "Reference")",
+                data: { idauth : $(this).data('id') },
+            success: function (content) {
+                $('#modDialog').html(content);
+                $('#modDialog').modal('show');
+            }
+        });
+    });
+        $('[data-removeclick]').click(function (e) {
+        e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("PartialRemoveAuthor", "Reference")",
+                data: { idauth : $(this).data('id') },
+            success: function (content) {
+                $('#modDialog').html(content);
+                $('#modDialog').modal('show');
+            }
+        });
+    });
+
+
+</script>
+
+<!-- /block -->

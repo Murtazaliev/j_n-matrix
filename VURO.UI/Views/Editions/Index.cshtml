@@ -1,0 +1,128 @@
+﻿@model MainViewModel
+@{
+    Layout = "_Layout";
+}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>
+<div class=" bd-primary mg-t-20">
+    <div class="row" style="margin: 15px 15px;padding-top:15px;">
+        <div class="col-md-3  myborder-theme">
+
+            <div class="card-header">
+
+                @if (MainViewModel.Language != "EN")
+                {
+                    <h4 style="font-family:Arial; font-weight:600">Список выпусков</h4>
+                }
+                else
+                {
+                    <h4 style="font-family:Arial; font-weight:600">Release List</h4>
+                }
+            </div>
+
+            <div>
+                <div id="editions-container" style="border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    overflow: hidden;
+    padding: 10px 0;">
+                    @foreach (var item in Model.DataYearList)
+                    {
+
+
+                        <div style="width:100%">
+                            <h4 style="font-size:15px;width:55px;margin-bottom: 10px;margin-top: 25px;">
+                                <b> @item.Year <i class="fa fa-angle-double-down"></i></b>
+
+                            </h4>
+                            <div>
+
+                                @foreach (var edition in item.DataEdition.Where(x => x.IdYear == item.Id).OrderBy(x => x.Edition))
+                                {
+                                    <button type="button" style="outline:none;outline:none;padding: 6px 12px;" class="btn btn-secondary" data-select-edition data-idedition="@edition.Id">@edition.Edition</button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9 myborder-theme">
+            @*<ul class="nav nav-tabs">
+                 Первая вкладка (активная) 
+                <li class="nav-item active">
+                    <a class="nav-link active" data-toggle="tab" aria-expanded="true" href="#description">Описание</a>
+                </li>
+                 Вторая вкладка 
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#characteristics">Характеристики</a>
+                </li>
+                
+            </ul>*@
+            <div id="articles">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="idedition" value="@ViewBag.idedition" />
+@section Scripts
+{
+    <script>
+    $(document).ready(function () {
+        if ($("#idedition").val() != "") {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("Articles", "Editions")",
+                data: { idedition: $("#idedition").val() },
+                success: function (content) {
+                    $('#articles').html(content);
+
+                }
+            });
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("LastArticles", "Editions")",
+                success: function (content) {
+                    $('#articles').html(content);
+
+                }
+            });
+        }
+    });
+
+    $("[data-select-edition]").click(function () {
+
+        var x = $('#editions-container').find('button')
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].classList.add("btn-secondary");
+            x[i].classList.remove("btn-danger");
+        }
+
+        $(this).removeClass("btn-secondary");
+        $(this).addClass("btn-danger");
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("Articles", "Editions")",
+            data: { idedition: $(this).data('idedition') },
+            success: function (content) {
+
+
+
+
+                $('#articles').html(content);
+            }
+        });
+    });
+
+    </script>
+}

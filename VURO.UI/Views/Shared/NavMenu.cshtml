@@ -1,0 +1,94 @@
+﻿@model MainViewModel
+<!-- Mobile Menu -->
+
+
+<nav class="navbar-collapse collapse" style="background-color: ghostwhite;">
+    <ul class="nav navbar-nav navbar-left">
+        @if (MainViewModel.Language != "EN")
+        {
+
+            <li><a asp-action="Index" asp-controller="Home">Главная</a></li>
+            <li><a asp-action="Index" asp-controller="Editions">Журнал</a></li>
+            <li><a asp-action="Index" asp-controller="Authors">Поиск статей</a></li>
+            <li><a asp-action="Index" asp-controller="MetaData">Метаданные</a></li>
+        }
+        else
+        {
+
+            <li><a asp-action="Index" asp-controller="Home">Main</a></li>
+            <li><a asp-action="Index" asp-controller="Editions">Magazine</a></li>
+            <li><a asp-action="Index" asp-controller="Authors">Search for articles</a></li>
+            <li><a asp-action="Index" asp-controller="MetaData">Metadata</a></li>
+        }
+        @foreach (var item in Model.DataInfoList.Where(x => x.InfoPageNum >= 20 && x.InfoPageNum < 30))
+        {
+            if (item.IsSectionOnMainPage == false)
+            {
+                @if (MainViewModel.Language != "EN")
+                {
+                    <li class="menu-active"><a asp-action="Journal" asp-controller="Home" asp-route-infoId="@item.Id">@item.InfoNameRu</a></li>
+                }
+                else
+                {
+                    <li class="menu-active"><a asp-action="Journal" asp-controller="Home" asp-route-infoId="@item.Id">@item.InfoNameEn</a></li>
+                }
+            }
+        }
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@(MainViewModel.Language != "EN" ? "Конференции" : "Conference")</a>
+            <ul class="dropdown-menu">
+                @if (MainViewModel.Language != "EN")
+                {
+                    <li><a asp-action="NewConferences" asp-controller="Conferences">Новые конференции</a></li>
+                    <li><a asp-action="Index" asp-controller="Conferences">Сборники конференций</a></li>
+                    <li><a asp-action="Journal" asp-controller="Home" asp-route-infoId="46d0bf14-515e-467f-9d03-c2560f447468">Организационный комитет</a></li>
+                    <li><a asp-action="ApplicationConference" asp-controller="Conferences">Заявка и оплата</a></li>
+                }
+                else
+                {
+
+                    <li><a asp-action="NewConferences" asp-controller="Conferences">New conferences</a></li>
+                    <li><a asp-action="Index" asp-controller="Conferences">Conference proceedings</a></li>
+                    <li><a asp-action="Journal" asp-controller="Home" asp-route-infoId="46d0bf14-515e-467f-9d03-c2560f447468">Organising Committee</a></li>
+                    <li><a asp-action="ApplicationConference" asp-controller="Conferences">Application and payment</a></li>
+                }
+            </ul>
+        </li>
+        <li>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@(MainViewModel.Language != "EN" ? "Информация журнала" : "Journal Information")</a>
+            <ul class="dropdown-menu">
+                @foreach (var item in Model.DataInfoList.Where(x => x.InfoPageNum < 20))
+                {
+                    if (item.IsSectionOnMainPage == false)
+                    {
+                        @if (MainViewModel.Language != "EN")
+                        {
+                            <li><a asp-action="Journal" asp-controller="Home" asp-route-infoId="@item.Id">@item.InfoNameRu</a></li>
+                        }
+                        else
+                        {
+                            <li><a asp-action="Journal" asp-controller="Home" asp-route-infoId="@item.Id">@item.InfoNameEn</a></li>
+                        }
+                    }
+                }
+            </ul>
+        </li>
+        @if (MainViewModel.Language != "EN")
+        {
+            <li><a href="https://jomeam.ru/" target="_blank">Журнал ВАК</a></li>
+            <li><a href="https://voenvestnik.ru/" target="_blank">Журнал РИНЦ</a></li>
+        }
+        else
+        {
+            <li><a href="https://jomeam.ru/" target="_blank">Journal of HAC</a></li>
+            <li><a href="https://voenvestnik.ru/" target="_blank">RSCI Journal</a></li>
+        }
+    </ul>
+    <div style="width:20%; float:right;">
+        <ul class="nav navbar-nav navbar-left">
+            <li style="color: #337ab7; font-size:18px; margin-top:10px">ISSN: 2713-0169</li>
+        </ul>
+    </div>
+</nav>
+
+<!-- /End Header 1 Warp -->

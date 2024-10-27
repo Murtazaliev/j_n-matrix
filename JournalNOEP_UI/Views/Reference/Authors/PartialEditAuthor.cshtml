@@ -1,0 +1,39 @@
+﻿@model JournalNOEP_DOMAIN.SprJoiurnalAuthors        
+
+<div class="modal-dialog modal-lg modal-dialog-vertical-center" role="document">
+            <div class="modal-content bd-0 tx-14">
+                <div class="modal-header pd-y-20 pd-x-25">
+                    <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Новый автор</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body pd-25">
+                    <div class="form-group has-success mg-b-0">
+                        <form id="add_author_modal" asp-action="EditAuthor" asp-controller="Reference" method="post">
+                            <input type="hidden" name="Id" asp-for="Id"  />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3>Русский</h3>
+                                    <input class="form-control" name="AuthFio" placeholder="ФИО" type="text" style="width:300px"  asp-for="AuthFio" required />
+                                    <input class="form-control mg-t-20" name="AuthJobMail" placeholder="Место работы, эл. почта" type="text" style="width:300px"  asp-for="AuthJobMail" required />
+                                    <input type="text" rows="10" class="form-control mg-t-20" name="AuthRegal" placeholder="Регалии" style="width:300px" asp-for="AuthRegal" />
+
+                                </div>
+                                <div class="col-md-6">
+                                    <h3>English</h3>
+                                    <input class="form-control" name="AuthFioEng" placeholder="Full name" type="text" style="width:300px" asp-for="AuthFioEng" />
+                                    <input class="form-control mg-t-20" name="AuthJobMailEng" placeholder="Job, mail" type="text" style="width:300px"  asp-for="AuthJobMailEng" />
+                                    <input type="text" rows="10" class="form-control mg-t-20" name="AuthRegalEng" placeholder="Regalia" style="width:300px" asp-for="AuthRegalEng" />
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="add_author_modal" class="btn btn-success pd-x-20">Сохранить</button>
+                    <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>

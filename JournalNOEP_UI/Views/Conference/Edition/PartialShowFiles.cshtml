@@ -1,0 +1,19 @@
+﻿
+
+<div class="modal-dialog modal-lg" role="document" style="width:800px;">
+    <div class="modal-content bd-0 tx-14">
+        <div class="modal-header pd-y-20 pd-x-25">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div id="PedigreesSireRacingModal" class="modal-body racing pd-25">
+          <iframe id="iframepdf" width="750" height="650" src="@ViewBag.Path"></iframe>
+        </div>
+
+        <div class="modal-footer">
+            <button type="submit" form="add_author_modal" class="btn btn-success pd-x-20">Сохранить</button>
+            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>

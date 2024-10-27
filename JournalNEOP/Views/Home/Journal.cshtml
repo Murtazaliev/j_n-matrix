@@ -1,0 +1,54 @@
+﻿@model MainViewModel
+
+
+<partial name="~/Views/Home/PartialHeader.cshtml" />
+<!-- #header -->
+<!-- start banner Area -->
+<section class="banner-area relative about-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+<div class="container">
+    <div id="infoPageDiv">
+        @* <partial name="PartialInfoPage.cshtml" />*@
+    </div>
+</div>
+<script>
+    window.onload = function () {
+        var infoId = '@ViewBag.InfoId';
+        $.ajax(
+            {
+                type: 'POST',
+                url: '@Url.Action("PartialInfoPage", "Home")',
+                data: { id: infoId },
+                success: function (data) {
+                    $('#infoPageDiv').html(data);
+                }
+            }
+        );
+
+    }
+
+    $("[data-info-link]").click(function () {
+        var infoId = $(this).data("routeId");
+        console.log(infoId)
+        @*$.ajax(
+            {
+                type: 'POST',
+                url: '@Url.Action("PartialTableCommentts", "Case")',
+                data: { id: infoId },
+                success: function (data) {
+                    $('#commenttsPillContainer').html(data);
+                }
+            }
+        );*@
+    });
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

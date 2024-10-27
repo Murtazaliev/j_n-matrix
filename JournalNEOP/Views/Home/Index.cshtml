@@ -1,0 +1,149 @@
+﻿@model MainViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<partial name="~/Views/Home/PartialHeader.cshtml" />
+
+
+<!-- #header -->
+<!-- start banner Area -->
+<section class="banner-area relative">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row fullscreen d-flex justify-content-center align-items-center">
+            <div class="banner-content col-lg-10 col-md-12 justify-content-center">
+                @if ( MainViewModel.Language  != "EN")
+                {
+                <h6 class="text-uppercase">НАУЧНЫЙ ЖУРНАЛ</h6>
+                <h1>
+
+                    НАУКА: ОБЩЕСТВО ЭКОНОМИКА ПРАВО
+                </h1>
+                <p class="text-white mx-auto">
+                    Свидетельство о регистрации средства массовой информации Федеральной
+                    службой по надзору в сфере, информационных технологий и массовых коммуникаций (Роскомнадзор)
+                    ЭЛ № ФС 77-76992 от 11.10.2019 года.
+
+                </p>
+                <a asp-action="Index" asp-controller="Editions" class="primary-btn squire text-uppercase mt-10">Последний выпуск</a>
+                }
+                else
+                {
+                <h6 class="text-uppercase">SCIENCE MAGAZINE</h6>
+                <h1>
+
+                    SCIENCE: SOCIETY ECONOMY LAW
+                </h1>
+                <p class="text-white mx-auto">
+                    Certificate of registration of the mass media by the Federal Service for the Supervision of Information Technologies and Mass Communications (Roskomnadzor) EL No. FS 77-76992 of 10/11/2019
+
+                </p>
+                <a asp-action="Index" asp-controller="Editions" class="primary-btn squire text-uppercase mt-10">Latest issue</a>
+
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+<!-- Start item-category Area -->
+<section class="item-category-area section-gap">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 pb-40 header-text text-center">
+                @if (MainViewModel.Language != "EN")
+                {
+                    <h1 class="pb-10">Разделы журнала</h1>
+                }
+                else
+                { 
+            <h1 class="pb-10">Magazine sections</h1>
+                }
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.SprJournalSectionList)
+            {
+            <div class="col-lg-4 col-md-4">
+                <div class="single-cat-item">
+                    @if (MainViewModel.Language != "EN")
+                    {
+                        <h4>@item.SectionName</h4>
+
+                        <p>
+                            @item.SectionInfo
+                        </p>
+                    }
+                    else
+                    {
+                        <h4>@item.SectionNameEng</h4>
+
+                        <p>
+                            @item.SectionInfoEng
+                        </p>
+                    }
+                </div>
+            </div>
+
+            }
+        </div>
+    </div>
+</section>
+<!-- End item-category Area -->
+<!-- Start about-video Area -->
+@foreach (var item in Model.DataInfoList)
+{
+    if (item.IsSectionOnMainPage == true)
+    {
+
+                    <section class="about-video-area section-gap">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12 about-video-left">
+                @if (MainViewModel.Language != "EN")
+                {
+
+                    <h1>
+                        @item.InfoNameRu
+                    </h1>
+                    <label>
+                        @Html.Raw(item.InfoTextRu)
+                    </label>
+
+                }
+                else
+                {
+                    <h1>
+                        @item.InfoNameEn
+                    </h1>
+                    <label>
+                        @Html.Raw(item.InfoTextEn)
+                    </label>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    }
+}
+<!-- End about-video Area -->
+<!-- start footer Area -->
+<footer class="footer-area section-gap">
+    <div class="container">
+
+        <div class="col-lg-12">
+            <p class="footer-text">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy; 2018 -
+                @*<script>document.write(new Date().getFullYear());</script>*@
+                ООО "Институт развития образование и консалтинга"
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+        </div>
+    </div>
+
+</footer>
+<!-- End footer Area -->

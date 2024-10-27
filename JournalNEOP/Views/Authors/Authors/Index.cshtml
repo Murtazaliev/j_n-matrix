@@ -1,0 +1,184 @@
+﻿@model MainViewModel
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    span {
+        cursor: pointer
+    }
+
+    .modal {
+        position: fixed;
+        width: 800px;
+        top: -100%;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #333;
+        z-index: 9999;
+        transition: all 0.5s ease-in;
+    }
+
+    .overflow {
+        width: 100%;
+        height: 100%;
+        z-index: 9998;
+        background: rgba(0,0,0,0.7);
+        position: fixed;
+        min-height: 1080px;
+        top: 0;
+    }
+
+    .gradeX {
+        cursor: pointer;
+    }
+
+    .myClass:hover {
+        background-color: #f3f3f3;
+    }
+</style>
+<div class="modal">
+
+</div>
+<div>
+    <br />
+    <h3> @Model.SprJoiurnalAuthor.AuthFio</h3>
+    <p><i>@Model.SprJoiurnalAuthor.AuthJobMail</i></p>
+
+    <p>
+        @Model.SprJoiurnalAuthor.AuthRegal
+    </p>
+
+
+    <!-- Start menu-list Area -->
+    <section class=" " style="width:98%">
+        <div class="">
+            <div class="row pb-0" style=" margin-left:10px;">
+
+
+                @foreach (var articleAuthors in Model.DataArticleAuthorsList)
+                {
+                <div class="single-menu-list row justify-content-between align-items-center myClass" style="cursor:pointer; width:100%;" data-artid="@articleAuthors.Article.Id">
+                    <div class="col-lg-9">
+                        @if ( MainViewModel.Language  != "EN")
+                            {
+                        <h4>@articleAuthors.Article.ArtName</h4>
+                        <p>
+                            <div class="row">
+                                <div class="col">
+                                    @(articleAuthors.Article.ArtUdk.Length > 1 ? ("УДК: " + articleAuthors.Article.ArtUdk) : "")
+                                </div>
+                                <div class="col text-right">
+
+                                    @foreach (var author in articleAuthors.Article.DataArticleAuthors.OrderBy(x => x.AuthorPos))
+                                            {
+                                    <i><span>@author.Author.AuthFio;</span></i>
+                                            }
+                                </div>
+                            </div>
+                        </p>
+
+                            }
+
+                            else
+                            {
+                        <h4>@articleAuthors.Article.ArtNameEng</h4>
+                        <p>
+                            <div class="row">
+                                <div class="col">
+                                    @(articleAuthors.Article.ArtUdk.Length > 1 ? ("UDK: " + articleAuthors.Article.ArtUdk) : "")
+                                </div>
+                                <div class="col text-right">
+
+                                    @foreach (var author in articleAuthors.Article.DataArticleAuthors.OrderBy(x => x.AuthorPos))
+                                            {
+                                    <i><span>@author.Author.AuthFioEng;</span></i>
+                                            }
+                                </div>
+                            </div>
+                        </p>
+                            }
+                    </div>
+
+
+                    <div class="flex-row d-flex price-size">
+                        <div class="s-price col">
+                            <h3>@articleAuthors.Article.Edition.IdYearNavigation.Year</h3>
+                            @if ( MainViewModel.Language  != "EN")
+                                {
+                            <p>год</p>
+                                }
+                                else
+                                {
+                            <p> year </p>
+                                }
+                        </div>
+                        <div class="s-price col">
+                            <h3>@articleAuthors.Article.Edition.Edition</h3>
+                            @if ( MainViewModel.Language  != "EN")
+                                {
+                            <p> выпуск </p>
+                                }
+                                else
+                                {
+                            <p> edition </p>
+                                }
+
+                        </div>
+                    </div>
+                </div>
+                }
+                }
+            </div>
+        </div>
+    </section>
+    <!-- End menu-list Area -->
+</div>
+<script>
+
+
+
+
+    var modal = document.querySelector('.modal');
+    var overflow = document.createElement('div');
+
+    $('[data-artid]').click(function openWin() {
+        overflow.className = "overflow";
+        document.body.appendChild(overflow);
+        var articleId = $(this).data('artid');
+        console.log(articleId);
+        var height = modal.offsetHeight;
+        modal.style.marginTop = - height / 2 + "px";
+        modal.style.top = "100px";
+        modal.style.margin = "0 auto";
+        $.ajax
+            ({
+                type: "POST",
+                data: { articleId: articleId },
+                url: '@Url.Action("PartialAnnotationView", "Editions")',
+                success: function (data) {
+                    $('.modal').html(data);
+                    $('.modal').show();
+                }
+            });
+    });
+
+
+
+    if (!Element.prototype.remove) {
+        Element.prototype.remove = function remove() {
+            if (this.parentNode) {
+                this.parentNode.removeChild(this);
+            }
+        };
+    }
+
+    overflow.onclick = function () {
+        modal.style.top = "-100%";
+        overflow.remove();
+        $('.modal').hide();
+}
+</script>

@@ -1,0 +1,109 @@
+﻿@model MainViewModel
+@{
+    Layout = null;
+}
+
+<style type="text/css">
+
+    @@media print {
+        .printSelected > * {
+            display: none;
+        }
+
+        .printSelected > .printSelection {
+            display: block;
+            height: 100%;
+        }
+
+        @@page {
+            size: landscape;
+        }
+
+        #print-content {
+            font-family: Arial;
+            width: 719px;
+            height: 100%;
+            position: relative;
+        }
+
+            #print-content table {
+                border-collapse: collapse;
+            }
+    }
+
+    #print-content table {
+        width: 400px; /* Ширина таблицы */
+        border-collapse: collapse; /* Отображать только одинарные линии */
+        border-left: 0px;
+        border-right: 0px;
+    }
+
+    #print-content th {
+        text-align: left; /* Выравнивание по левому краю */
+        background: #EAEAEA; /* Цвет фона ячеек */
+        padding: 2px; /* Поля вокруг содержимого ячеек */
+        border: 1px solid black; /* Граница вокруг ячеек */
+        font-size: 8.0pt;
+        font-weight: bold;
+    }
+
+    #print-content td {
+        font-size: 8.0pt;
+        padding: 2px; /* Поля вокруг содержимого ячеек */
+        border: 1px solid black; /* Граница вокруг ячеек */
+    }
+
+    #print-content p {
+        line-height: 5pt;
+    }
+
+    #print-content {
+        font-family: Tahoma;
+        position: relative;
+        height: auto;
+        min-height: 170mm;
+        padding-bottom: 50px;
+    }
+
+        #print-content .first {
+            border-left: 0px;
+        }
+
+        #print-content .last {
+            border-right: 0px;
+        }
+
+    .printSelection {
+        display: none;
+    }
+
+    .page_break {
+        page-break-before: always;
+    }
+</style>
+
+<div class="row">
+    <div class="bout-video-left">
+        @if (MainViewModel.Language != "EN")
+        {
+            <div class="text-center" style="text-transform:uppercase;">
+                <h2 class="title-with-sub"><span class="color-theme"><i class="fa fa-book"></i> @Model.DataInfo.InfoNameRu</span></h2>
+            </div>
+
+            <label>
+                @Html.Raw(Model.DataInfo.InfoTextRu)
+            </label>
+
+        }
+        else
+        {
+            <div class="text-center" style="text-transform:uppercase;">
+                <h2 class="title-with-sub"><span class="color-theme"><i class="fa fa-book"></i> @Model.DataInfo.InfoNameEn</span></h2>
+            </div>
+            <label>
+                @Html.Raw(Model.DataInfo.InfoTextEn)
+            </label>
+        }
+    </div>
+
+</div>

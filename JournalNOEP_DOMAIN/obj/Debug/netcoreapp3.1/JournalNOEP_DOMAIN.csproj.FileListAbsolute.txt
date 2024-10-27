@@ -1,0 +1,10 @@
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.AssemblyInfoInputs.cache
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.AssemblyInfo.cs
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.csproj.CoreCompileInputs.cache
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.csproj.AssemblyReference.cache
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.GeneratedMSBuildEditorConfig.editorconfig
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\bin\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.deps.json
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\bin\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.dll
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\bin\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.pdb
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.dll
+F:\Проекты\JournalNM\JournalNOEP_DOMAIN\obj\Debug\netcoreapp3.1\JournalNOEP_DOMAIN.pdb

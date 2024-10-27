@@ -1,0 +1,128 @@
+﻿@model MainViewModel
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+        <div id="modal-content" class="modal-content">
+
+        </div>
+    </div>
+</div>
+<div class=" bd-primary mg-t-20">
+    <div class="row" style="margin: 15px 15px;">
+        <div class="col-md-3  myborder-theme" style="margin-top:15px;">
+
+            <div>
+
+                @if (MainViewModel.Language != "EN")
+                {
+                <h6 style="font-family:Arial; font-weight:600">Сборники конференций</h6>
+                }
+                else
+                {
+            <h6 style="font-family:Arial; font-weight:600">Conference proceedings</h6>
+                }
+            </div>
+
+            <div>
+                <div id="editions-container" style="border-bottom: 1px solid #e5e5e5;
+    border-top: 1px solid #e5e5e5;
+    overflow: hidden;
+    padding: 10px 0;">
+                    @foreach (var item in Model.DataConferenceYear)
+                    {
+
+
+                        <div style="width:100%">
+                            <h4 style="font-size:15px;width:55px;margin-bottom: 10px;margin-top: 25px;">
+                                <b> @item.Year <i class="fa fa-angle-double-down"></i></b>
+
+                            </h4>
+                            <nav class="pagination-area">
+                                <ul class="pagination justify-content-center" style="float: left;">
+
+
+                                    @foreach (var edition in item.DataConferenceEditions.Where(x => x.DataConferenceYearId == item.Id).OrderBy(x => x.Edition))
+                                    {
+                                        <li><a href="#" data-select-edition data-idedition="@edition.Id">@edition.Edition</a></li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-9 myborder-theme">
+            @*<ul class="nav nav-tabs">
+                 Первая вкладка (активная) 
+                <li class="nav-item active">
+                    <a class="nav-link active" data-toggle="tab" aria-expanded="true" href="#description">Описание</a>
+                </li>
+                 Вторая вкладка 
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#characteristics">Характеристики</a>
+                </li>
+                
+            </ul>*@
+            <div id="articles">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" id="idedition" value="@ViewBag.idedition" />
+@section Scripts
+{
+    <script>
+    $(document).ready(function () {
+        if ($("#idedition").val() != "") {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("Articles", "Conferences")",
+                data: { idedition: $("#idedition").val() },
+                success: function (content) {
+                    $('#articles').html(content);
+
+                }
+            });
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("LastArticles", "Conferences")",
+                success: function (content) {
+                    $('#articles').html(content);
+
+                }
+            });
+        }
+    });
+
+    $("[data-select-edition]").click(function () {
+
+         var x = $('#editions-container').find('a')
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].classList.remove("current");
+            
+        }
+
+        $(this).addClass("current");
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("Articles", "Conferences")",
+            data: { idedition: $(this).data('idedition') },
+            success: function (content) {
+
+
+
+
+                $('#articles').html(content);
+            }
+        });
+    });
+
+    </script>
+}

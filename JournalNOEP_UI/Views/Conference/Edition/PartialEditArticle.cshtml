@@ -1,0 +1,102 @@
+﻿@model JournalNOEP_DOMAIN.DataConferenceArticle
+
+
+<div class="modal-dialog  modal-lg" role="document" style="min-width:800px;">
+    <div class="modal-content bd-0 tx-14">
+        <div class="modal-header pd-y-20 pd-x-25">
+            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">Статья</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="add_edition_modal" enctype="multipart/form-data" asp-action="EditArticle" asp-controller="Conference" method="post">
+                <input type="hidden" name="Id" asp-for="Id" />
+                <input type="hidden" asp-for="DataConferenceEditionId" value="@ViewBag.IdEdition" />
+                <input type="hidden" name="ArtFile" asp-for="ArtFile" />
+                <input type="hidden" name="ArtPos" asp-for="ArtPos" />
+
+                <div class="form-group row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mg-t-20 bg-gray-300">
+                        <input class="form-control" type="text" name="ArtName" id="ArtName" placeholder="Название" style="width:100%" asp-for="ArtName" required />
+                        <textarea class="form-control mg-t-20" name="ArtAnnotation" placeholder="Аннотация" rows="10" style="width:100%" asp-for="ArtAnnotation" required></textarea>
+                        <input class="form-control mg-t-20" type="text" name="ArtKeywords" id="ArtKeywords" placeholder="Ключевые слова" style="width:100%" asp-for="ArtKeywords" required />
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 mg-t-20 bg-gray-300">
+                        <input class="form-control" type="text" name="ArtNameEng" placeholder="Название на английском" style="width:100%" asp-for="ArtNameEng" />
+                        <textarea class="form-control mg-t-20" name="ArtAnnotationEng" placeholder="Аннотация на английском" rows="10" style="width:100%" asp-for="ArtAnnotationEng"></textarea>
+                        <input class="form-control mg-t-20" type="text" name="ArtKeywordsEng" id="ArtKeywordsEng" placeholder="Keywords" style="width:100%" asp-for="ArtKeywordsEng"  />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mg-t-20">
+                        <input class="form-control" type="text" name="ArtUdk" id="ArtUdk" placeholder="УДК" style="width:100%" asp-for="ArtUdk" required />
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mg-t-20">
+                        @if (Model == null)
+                        {
+                            <div class="custom-file">
+                                <input type="file" class="form-control-file" name="ArtFileNew" accept="application/pdf" required>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+
+                        <select id="ArtAuthors" name="ArtAuthors" class="form-control select2" data-placeholder="Авторы статьи" style="width:100%;" multiple>
+                            @if (ViewBag.AuthorsInArticle != null)
+                            {
+                                @foreach (var items in ViewBag.AuthorsInArticle)
+                                {
+                                    <option value="@items.Id" selected>@items.AuthFio</option>
+                                }
+                            }
+                            @foreach (var items in ViewBag.AuthorsOutArticles)
+                            {
+                                <option value="@items.Id">@items.AuthFio</option>
+                            }
+                        </select>
+
+
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="add_edition_modal" class="btn btn-success pd-x-20">Сохранить</button>
+            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+<script src="~/lib/select2/js/select2.js"></script>
+<script src="~/lib/spectrum/spectrum.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $(".select2").select2({
+            tags: true
+        });
+
+
+
+    });
+    $(".select2").on("select2:select", function (evt) {
+          var element = evt.params.data.element;
+          var $element = $(element);
+
+          if ($(this).find(":selected").length > 1) {
+            var $second = $(this).find(":selected").eq(-1);
+            $second.after($element);
+          } else {
+            $element.detach();
+            $(this).prepend($element);
+          }
+
+          $(this).trigger("change");
+        });
+
+</script>

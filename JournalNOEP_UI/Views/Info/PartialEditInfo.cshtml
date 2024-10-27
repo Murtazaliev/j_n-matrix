@@ -1,0 +1,71 @@
+﻿@model JournalNOEP_DOMAIN.DataInfo
+
+<link href="~/lib/medium-editor/medium-editor.css" rel="stylesheet" />
+<link href="~/lib/medium-editor/default.css" rel="stylesheet" />
+<link href="~/lib/summernote/summernote-bs4.css" rel="stylesheet" />
+
+<div class="modal-dialog modal-dialog-vertical-center modal-lg" role="document">
+    <div class="modal-content bd-0 tx-14">
+        <div class="modal-header pd-y-20 pd-x-25">
+            <h6 class="tx-14 mg-b-0 tx-uppercase tx-inverse tx-bold">РЕДАКТОР ИНФОРМАЦИИ НА СТРАНИЦЕ </h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body pd-25">
+            <form id="add_author_modal" asp-action="EditInfo" asp-controller="Info" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="Id" asp-for="Id" />
+
+                <fieldset class="border p-2">
+                    <legend class="mg-1"> На русском</legend>
+                    <input class="form-control" type="text" name="InfoNameRu" asp-for="InfoNameRu" placeholder="Информационная страница" /><br />
+                    <textarea name="InfoTextRu" asp-for="InfoTextRu" placeholder="Info in English" id="summernoteru"></textarea>
+                </fieldset>
+                <fieldset class="border p-2">
+                    <legend> English</legend>
+                    <input class="form-control" type="text" name="InfoNameEn" asp-for="InfoNameEn" placeholder="Information page" /><br />
+                    <textarea name="InfoTextEn" asp-for="InfoTextEn" placeholder="Info in English" id="summernoteen"></textarea>
+                </fieldset>
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="form-control form-group align-baseline"><input type="checkbox" name="IsSectionOnMainPage" asp-for="IsSectionOnMainPage" />   Отображать на главной </label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control align-baseline" type="number" name="InfoPageNum" asp-for="InfoPageNum" min="0" max="40" style="width:100px" placeholder="Порядок вкладки" />
+                    </div>
+                </div>
+
+            </form>
+          
+        </div>
+        <div class="modal-footer">
+            <button type="submit" form="add_author_modal" class="btn btn-success pd-x-20">Сохранить</button>
+            <button type="button" class="btn btn-secondary pd-x-20" data-dismiss="modal">Закрыть</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="~/lib/medium-editor/medium-editor.js"></script>
+<script src="~/lib/summernote/summernote-bs4.min.js"></script>
+<script>
+    $(function () {
+        'use strict';
+
+
+        // Summernote editor
+        $('#summernoteru').summernote({
+            height: 150,
+            tooltip: false
+        })
+        // Summernote editor
+        $('#summernoteen').summernote({
+            height: 150,
+            tooltip: false
+        })
+    });
+</script>

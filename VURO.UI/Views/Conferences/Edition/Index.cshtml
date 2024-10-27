@@ -1,0 +1,119 @@
+﻿@model IEnumerable<JournalNOEP_DOMAIN.DataConferenceArticle>
+<link href="~/site/style.css" rel="stylesheet" />
+
+
+
+
+
+        <div class="row align-baseline" style="height: 50px;padding-bottom: 5px;">
+            <div class="col-md-9">
+                @if (MainViewModel.Language != "EN")
+                {
+                    <h4 class="panel-body text-white">  Выпуск №@ViewBag.EditionNumber, @ViewBag.EditionYear г. </h4>
+                }
+                else
+                {
+                    <h4 class="panel-body text-white">  Edition №@ViewBag.EditionNumber, @ViewBag.EditionYear y. </h4>
+                }
+            </div>
+            <div class="col-md-3 pt-2">
+                @{if (ViewBag.EditionFile != null)
+                    {
+                        <a target="_blank" href="http://admin.nmatrix.ru/Files/EditionFiles/@ViewBag.EditionFile" style=" text-align:center; float:right"
+                           class="panel-body text-white">
+                            Весь выпуск &nbsp;
+                            <i class="fa fa-file-pdf-o pd-b-0 float-left"></i>
+                            <span class="lnr lnr-arrow-right">
+                            </span>
+                        </a>
+                    }
+
+                }
+            </div>
+        </div>
+
+    <div id="art" class="row">
+
+
+
+
+
+        <!-- Start menu-list Area -->
+        <section class=" section-gap" style="width:98%;">
+            <div class="">
+                <div class="row pb-0">
+                    <div class="menu-cat mx-auto col-md-12">
+
+
+                   
+                            <div>
+                                @if (MainViewModel.Language != "EN")
+                                {
+                                    @foreach (var item in Model.OrderBy(x => x.ArtPos))
+                                    {
+                                        <div class="artNameClass" style="cursor:pointer; width:100%;" data-artid="@item.Id" data-toggle="modal" data-target="#myModal">
+                                            <div class="col-lg-12">
+                                                <h6>УДК: @item.ArtUdk</h6>
+
+                                                <p style="font-size:18px;">
+                                                    <i class="fa fa-angle-right"></i>  @item.ArtName
+                                                </p>
+                                                <div style="width:100%; text-align:right;">
+                                                    @foreach (var author in item.DataConferenceArticleAuthors.OrderBy(x => x.AuthorPos))
+                                                    {
+                                                        <i><span>@author.SprJoiurnalAuthors.AuthFio;</span></i>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var item in Model.OrderBy(x => x.ArtPos))
+                                    {
+                                        <div class="artNameClass" style="cursor:pointer; width:100%;" data-artid="@item.Id" data-toggle="modal" data-target="#myModal">
+                                            <div class="col-lg-12">
+                                                <h6>УДК: @item.ArtUdk</h6>
+
+                                                <p style="font-size:18px;">
+                                                    <i class="fa fa-angle-right"></i>  @item.ArtNameEng
+                                                </p>
+                                                <div style="width:100%; text-align:right;">
+                                                    @foreach (var author in item.DataConferenceArticleAuthors.OrderBy(x => x.AuthorPos))
+                                                    {
+                                                        <i><span>@author.SprJoiurnalAuthors.AuthFioEng;</span></i>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                  
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <!-- End menu-list Area -->
+
+    </div>
+
+<script>
+   $('[data-artid]').click(function openWin() {
+        var articleId = $(this).data('artid');
+        $.ajax
+            ({
+                type: "GET",
+                data: { articleId: articleId },
+                url: '@Url.Action("PartialAnnotationView", "Conferences")',
+                success: function (data) {
+                    $('#modal-content').html(data);
+                }
+            });
+    });
+
+</script>

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<JournalNOEP_DOMAIN.DataInfo>
+
+<link href="~/lib/datatables/jquery.dataTables.css" rel="stylesheet">
+
+<div id="modDialog" class="modal fade">
+
+</div>
+<div class="sh-pagetitle-left">
+    <div class="sh-pagetitle-icon"><i class="icon ion-information "></i></div>
+    <div class="sh-pagetitle-title">
+        <span>Администратор журнала</span>
+        <h2>Информация</h2>
+    </div><!-- sh-pagetitle-left-title -->
+</div><!-- sh-pagetitle-left -->
+
+
+<div class="card bd-primary mg-t-20">
+    <div class="card-header bg-primary tx-white">
+        <div class="row">
+            <div class="col-sm-7  align-self-center">
+                <i style="font-size:26px;margin-right:5px;" class="icon ion-information"></i>
+                Список информационных страниц
+            </div>
+            <div class="col-sm-5 text-right">
+                <a href="#" class="btn btn-outline-secondary" data-toggle="modal" data-target="#dialogContent" data-editclick>
+                    <i class="fa fa-plus mg-r-10"></i>
+                    Добавить
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body pd-sm-30">
+
+        <div class="table-wrapper">
+            <table id="datatable1" class="table display responsive ">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Страница</th>
+                        <th>Текст</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="gradeX">
+                            <td style="width:50px">
+                                @item.InfoPageNum
+                            </td>
+                            <td>
+                                <span style="font-size:14px; font-weight:bold;">@item.InfoNameRu</span> <i>(<span data-authregal style="font-size:12px">@item.InfoNameEn</span>)</i>
+                                <div>
+                                    <div style="max-width:900px; min-width:500px;">
+                                        <p class="m-0" style="width:unset; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            @item.InfoTextRu
+                                        </p>
+                                        <p style="width:unset; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size:11px;">
+                                            @item.InfoTextEn
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width:150px">
+                                <a href="#" class="btn btn-outline-primary btn-icon mg-r-5" data-editclick data-id="@item.Id">
+                                    <div>
+                                        <i class="icon ion-edit"></i>
+                                    </div>
+                                </a>
+                                <a href="#" class="btn btn-outline-danger btn-icon mg-r-5" data-removeclick data-id="@item.Id">
+                                    <div>
+                                        <i class="icon ion-trash-a"></i>
+                                    </div>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/lib/datatables/jquery.dataTables.js"></script>
+<script>
+        $('[data-editclick]').click(function (e) {
+        e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("PartialEditInfo", "Info")",
+                data: { id : $(this).data('id') },
+            success: function (content) {
+                $('#modDialog').html(content);
+                $('#modDialog').modal('show');
+            }
+        });
+    });
+        $('[data-removeclick]').click(function (e) {
+        e.preventDefault();
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("PartialRemoveInfo", "Info")",
+                data: { id : $(this).data('id') },
+            success: function (content) {
+                $('#modDialog').html(content);
+                $('#modDialog').modal('show');
+            }
+        });
+    });
+</script>

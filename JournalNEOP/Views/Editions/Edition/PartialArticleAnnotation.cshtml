@@ -1,0 +1,48 @@
+﻿@model  MainViewModel
+<div class="modal-header"></div>
+<div class="modal-body">
+    <div style="height:340px; overflow-y:auto;">
+        <h3>@Model.Article.ArtName</h3>
+
+        <i>
+            @foreach (var item in Model.DataArticleAuthorsList)
+            {
+                @item.Author.AuthFio;
+            }
+        </i>
+        <div class="mt-2">
+            @Model.Article.ArtAnnotation
+        </div>
+        <br />
+        <i>
+            @if (Model.Article.ArtKeywordsEng.Length > 1)
+            {
+                <span>   Ключевые слова: @Model.Article.ArtKeywords</span>
+            }
+        </i>
+
+
+        <h4 class="mt-20">@Model.Article.ArtNameEng</h4>
+
+        <i>
+            @foreach (var item in Model.DataArticleAuthorsList)
+            {
+                @item.Author.AuthFioEng;
+            }
+        </i>
+        <div class="mt-2">
+            @Model.Article.ArtAnnotationEng
+        </div>
+        <br />
+        <i>
+            @if (Model.Article.ArtKeywordsEng.Length > 1)
+            {
+                <span>   Keywords: @Model.Article.ArtKeywordsEng</span>
+            }
+        </i>
+    </div>
+</div>
+<div class="modal-footer">
+    <a target="_blank" href="http://admin.noep.ru/Files/ArticleFiles/@Model.Article.ArtFile"> Открыть файл <i class="fa fa-file-pdf-o pd-b-0 float-left"></i></a>
+
+</div>

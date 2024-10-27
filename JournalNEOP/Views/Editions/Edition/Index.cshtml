@@ -1,0 +1,259 @@
+﻿@model IEnumerable<JournalNOEP_DOMAIN.Articles>
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    span {
+        cursor: pointer
+    }
+
+    .modal {
+        position: fixed;
+        width: 800px;
+        top: -100%;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #333;
+        z-index: 9999;
+        transition: all 0.5s ease-in;
+
+    }
+
+    .overflow {
+        width: 100%;
+        height: 100%;
+        z-index: 9998;
+        background: rgba(0,0,0,0.7);
+        position: fixed;
+        min-height: 1080px;
+        top: 0;
+    }
+
+    .gradeX {
+        cursor: pointer;
+    }
+    .myClass:hover {
+    background-color:#f3f3f3;
+    }
+</style>
+
+
+
+
+<div class="modal">
+
+</div>
+
+
+<div class="  mg-t-90">
+
+    <div class=" tx-white">
+        <div class="row align-baseline" style="height:50px; padding-bottom:5px; ">
+            <div class="col-md-9 pt-4">
+                @if (MainViewModel.Language != "EN")
+                {
+                    <h3>  Выпуск №@ViewBag.EditionNumber, @ViewBag.EditionYear г. </h3>
+                }
+                else
+                {
+                    <h3>  Edition №@ViewBag.EditionNumber, @ViewBag.EditionYear y. </h3>
+                }
+            </div>
+            <div class="col-md-3 pt-2">
+                @{if (ViewBag.EditionFile != null)
+                    {
+                                <a target="_blank" href="http://admin.noep.ru/Files/EditionFiles/@ViewBag.EditionFile" style=" text-align:center; float:right"
+                                   class="genric-btn primary circle arrow pl-3 pr-3 pt-2 pb-2">
+                                    @if (MainViewModel.Language != "EN")
+                                    {
+                                        <p> Весь выпуск </p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            All edition
+                                        </p>
+                                    }
+                                    <i class="fa fa-file-pdf-o pd-b-0 float-left"></i>
+                                    <span class="lnr lnr-arrow-right">
+                                    </span>
+                                </a>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+    <div id="art" class="row">
+
+
+
+
+
+        <!-- Start menu-list Area -->
+        <section class=" section-gap"  style="width:98%">
+            <div class="">
+                <div class="row pb-0"  style="margin-top:-40px">
+                    <div class="menu-cat mx-auto">
+                        <ul class="nav nav-pills" id="pills-tab" role="tablist">
+                            @{ Guid sectId = Guid.Empty; }
+                            @foreach (var sect in Model.OrderBy(x => x.Section.SectionPos))
+                            {
+                                if (sect.SectionId != sectId)
+                                {
+                                    if (sect.SectionId.ToString() == "7f20d361-afac-48ee-93d7-99bf4521021b")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pizza-tab" data-toggle="pill" href="#@sect.SectionId" role="tab" aria-controls="pizza" aria-selected="true">
+                                                @if ( MainViewModel.Language  != "EN")
+                                                {
+                                                <p>
+                                                    @sect.Section.SectionName
+                                                </p>
+                                                }
+                                                else
+                                                {
+                                                <p>
+                                                    @sect.Section.SectionNameEng
+                                                </p>
+                                                }
+                                            </a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pills-bread-tab" data-toggle="pill" href="#@sect.SectionId" role="tab" aria-controls="pills-bread" aria-selected="false">
+
+                                                @if ( MainViewModel.Language  != "EN")
+                                                {
+                                                <p>
+                                                    @sect.Section.SectionName
+                                                </p>
+                                                }
+                                                else
+                                                {
+                                                <p>
+                                                    @sect.Section.SectionNameEng
+                                                </p>
+                                                }
+
+                                            </a>
+                                        </li>
+                                    }
+                                    sectId = sect.SectionId;
+                                }
+                            }
+                        </ul>
+                        <hr />
+                    </div>
+
+                </div>
+
+                <div id="pills-tabContent" class="tab-content absolute" style="width:100%; margin-top:-80px">
+                    @foreach (var sect in Model.GroupBy(x => x.SectionId))
+                    {
+
+                    <div class="tab-pane fade show active" id="@sect.Key" role="tabpanel" style="width:100%;" aria-labelledby="pizza-tab">
+
+                        @foreach (var item in Model.OrderBy(x => x.ArtPos))
+                            {
+                                if (item.SectionId == sect.Key)
+                                {
+                        @if ( MainViewModel.Language  != "EN")
+                        {<div class="single-menu-list row justify-content-between align-items-center myClass" style="cursor:pointer; width:100%;" data-artid="@item.Id">
+                            <div class="col-lg-12">
+                                <h6>УДК: @item.ArtUdk</h6>
+
+                                <span class="fz-18" style="color:#d1ab7f">
+                                    @item.ArtName
+                                </span><br />
+                                <div style="width:100%; text-align:right;">
+                                    @foreach (var author in item.DataArticleAuthors.OrderBy(x => x.AuthorPos))
+                                        {
+                                    <i><span>@author.Author.AuthFio;</span></i>
+                                        }
+                                </div>
+                            </div>
+                        </div>
+                        }
+                        else
+                        {
+                            if (item.ArtNameEng != null && item.ArtNameEng.Length > 3)
+                            {<div class="single-menu-list row justify-content-between align-items-center myClass" style="cursor:pointer; width:100%;" data-artid="@item.Id">
+                            <div class="col-lg-12">
+                                <h6>UDK: @item.ArtUdk</h6>
+
+                                <span class="fz-18" style="color:#d1ab7f">
+                                    @item.ArtNameEng
+                                </span><br />
+                                <div style="width:100%; text-align:right;">
+                                    @foreach (var author in item.DataArticleAuthors.OrderBy(x => x.AuthorPos))
+                                            {
+                                    <i><span>@author.Author.AuthFioEng;</span></i>
+                                            }
+                                </div>
+                            </div>
+                        </div>
+                            }
+                        }
+                                }
+                            }
+
+                    </div>
+                    }
+                </div>
+                </div>
+        </section>
+        <!-- End menu-list Area -->
+
+    </div>
+</div>
+<script>
+
+
+
+
+    var modal = document.querySelector('.modal');
+    var overflow = document.createElement('div');
+
+    $('[data-artid]').click(function openWin() {
+        overflow.className = "overflow";
+        document.body.appendChild(overflow);
+        var articleId = $(this).data('artid');
+        console.log(articleId);
+        var height = modal.offsetHeight;
+        modal.style.marginTop = - height / 2 + "px";
+        modal.style.top = "100px";
+        modal.style.margin = "0 auto";
+        $.ajax
+            ({
+                type: "POST",
+                data: { articleId: articleId },
+                url: '@Url.Action("PartialAnnotationView", "Editions")',
+                success: function (data) {
+                    $('.modal').html(data);
+                    $('.modal').show();
+                }
+            });
+    });
+
+
+
+    if (!Element.prototype.remove) {
+        Element.prototype.remove = function remove() {
+            if (this.parentNode) {
+                this.parentNode.removeChild(this);
+            }
+        };
+    }
+
+    overflow.onclick = function () {
+        modal.style.top = "-100%";
+        overflow.remove();
+        $('.modal').hide();
+}
+</script>

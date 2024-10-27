@@ -1,0 +1,14 @@
+﻿@model JournalNOEP_DOMAIN.DataInfo
+<br>
+@if (MainViewModel.Language != "EN")
+{
+    <h2>@Model.InfoNameRu</h2>
+    <br>
+    @Html.Raw(Model.InfoTextRu)
+}
+else
+{
+    <h2>@Model.InfoNameEn</h2>
+    <br>
+    @Html.Raw(Model.InfoTextEn)
+}

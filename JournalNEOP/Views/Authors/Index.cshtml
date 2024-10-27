@@ -1,0 +1,232 @@
+﻿@model MainViewModel
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link href="~/plugins/datatables/jquery.dataTables.css" rel="stylesheet" />
+
+<script src="~/plugins/datatables/jquery.dataTables.js"></script>
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    span {
+        cursor: pointer
+    }
+
+
+    .modal {
+        position: fixed;
+        width: 800px;
+        top: -100%;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #333;
+        z-index: 9999;
+        transition: all 0.5s ease-in;
+        max-height:600px;
+    }
+
+    .overflow {
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        background: rgba(0,0,0,0.7);
+        position: fixed;
+        min-height: 1080px;
+        top: 0;
+    }
+
+    .gradeX {
+        cursor: pointer;
+    }
+
+    .myClass:hover {
+        background-color: #f3f3f3;
+    }
+    .dataTables_filter input { width: 500px }
+
+</style>
+
+<partial name="~/Views/Home/PartialHeader.cshtml" />
+<!-- #header -->
+<!-- start banner Area -->
+<section class="banner-area relative about-banner">
+    <div class="overlay overlay-bg"></div>
+
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="about-content col-lg-12">
+
+        </div>
+    </div>
+
+</section>
+<div class="modal">
+
+</div>
+<div class="container" style="margin-top:50PX;">
+
+  @*  <input type="search" id="myInput" class="form-control" style="margin-left:-13px; margin-top:20px" placeholder="Поиск..." />*@
+
+
+
+    <table id="tableAuthors" class="table-hover row">
+        <thead>
+            <tr style="height:0px; width:0px; border:none;">
+                <th style="height:0px; width:0px; border:none;"></th>
+                <th style="height:0px; width:0px; border:none;"></th>
+                <th style="height:0px; width:0px; border:none;"></th>
+            </tr>
+        </thead>
+        <tbody id="myTable" style="border:none; width:100%;">
+            @foreach (var item in Model.ArticleList)
+            {
+
+                <tr class="single-menu-list col-12 row justify-content-between align-items-center myClass" style="cursor:pointer;" data-artid="@item.Id">
+                    <td class="col-md-8">
+
+                        @if (MainViewModel.Language != "EN")
+                        {
+
+                            <h6>УДК: @item.ArtUdk</h6>
+
+                            <p class="fz-18" style="color:#d1ab7f">
+                                @item.ArtName
+                            </p><br />
+                            <div style="width:100%; text-align:right; float:right">
+                                @foreach (var author in item.DataArticleAuthors.OrderBy(x => x.AuthorPos))
+                                {
+                                    <i><span>@author.Author.AuthFio;</span></i>
+                                }
+                            </div>
+
+
+                        }
+                        else
+                        {
+                            if (item.ArtNameEng != null && item.ArtNameEng.Length > 3)
+                            {
+
+
+
+                                <h6>UDK: @item.ArtUdk</h6>
+
+                                <p class="fz-18" style="color:#d1ab7f">
+                                    @item.ArtNameEng
+                                </p><br />
+                                <div style="width:100%; text-align:right;">
+                                    @foreach (var author in item.DataArticleAuthors.OrderBy(x => x.AuthorPos))
+                                    {
+                                        <i><span>@author.Author.AuthFioEng;</span></i>
+                                    }
+                                </div>
+
+
+
+                            }
+                        }
+                    </td>
+                    <td class="col-md-2 mt-10" style="text-align:center;">
+
+                        <h2>@item.Edition.IdYearNavigation.Year</h2>
+                        @if (MainViewModel.Language != "EN")
+                        {
+                            <p>год</p>
+                        }
+                        else
+                        {
+                            <p> year </p>
+                        }
+                    </td>
+                    <td class="col-md-2" style="text-align:center;">
+                        <h2>@item.Edition.Edition</h2>
+                        @if (MainViewModel.Language != "EN")
+                        {
+                            <p> выпуск </p>
+                        }
+                        else
+                        {
+                            <p> edition </p>
+                        }
+
+
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- End banner Area -->
+<script>
+
+    $(document).ready(function () {
+        $('table').dataTable( {
+  "lengthChange": false,
+             "order": [[ 1, "desc" ], [ 2, "desc" ], [ 0, "by" ] ]
+} ).dataTable();
+         $('.dataTable').each(function(){
+             var datatable = $(this);
+             var search_div = datatable.closest('.dataTables_wrapper').find('div[id$=_filter]');
+             search_div.attr('style', 'width:600px;');
+
+        // SEARCH - Add the placeholder for Search and Turn this into in-line form control
+        var search_input = datatable.closest('.dataTables_wrapper').find('div[id$=_filter] input');
+        search_input.attr('placeholder', 'Search');
+        search_input.attr('style', 'width:600px;');
+        search_input.addClass('form-control input-lg');
+        // LENGTH - Inline-Form control
+        var length_sel = datatable.closest('.dataTables_wrapper').find('div[id$=_length] select');
+        length_sel.addClass('form-control input-sm');
+    });
+        //$("#myInput").on("keyup", function () {
+        //    var value = $(this).val().toLowerCase();
+        //    $("#myTable tr").filter(function () {
+        //        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        //    });
+        //});
+    });
+   $('[data-artid]').click(function openWin() {
+        overflow.className = "overflow";
+        document.body.appendChild(overflow);
+        var articleId = $(this).data('artid');
+        console.log(articleId);
+        var height = modal.offsetHeight;
+        modal.style.marginTop = - height / 2 + "px";
+        modal.style.top = "100px";
+        modal.style.margin = "0 auto";
+        $.ajax
+            ({
+                type: "POST",
+                data: { articleId: articleId },
+                url: '@Url.Action("PartialAnnotationView", "Editions")',
+                success: function (data) {
+                    $('.modal').html(data);
+                    $('.modal').show();
+                }
+            });
+    });
+     var modal = document.querySelector('.modal');
+    var overflow = document.createElement('div');
+
+
+
+
+    if (!Element.prototype.remove) {
+        Element.prototype.remove = function remove() {
+            if (this.parentNode) {
+                this.parentNode.removeChild(this);
+            }
+        };
+    }
+
+    overflow.onclick = function () {
+        modal.style.top = "-100%";
+        overflow.remove();
+        $('.modal').hide();
+        }
+</script>

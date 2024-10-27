@@ -1,0 +1,116 @@
+﻿@model MainViewModel
+
+
+
+<partial name="~/Views/Home/PartialHeader.cshtml" /><!-- #header -->
+<!-- start banner Area -->
+<section class="banner-area relative about-banner">
+    <div class="overlay overlay-bg"></div>
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="about-content col-lg-12">
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End banner Area -->
+<div class=" bd-primary mg-t-20">
+    <div class="row" style="margin: 15px 0; padding-top:15px;">
+        <div class="col-md-3" style="min-height:500px; ">
+            <div class="card-header  tx-white">
+                <div class="row align-baseline">
+                    @if ( MainViewModel.Language  != "EN")
+                    {<h2>Список выпусков</h2>
+                        
+                    }
+                    else
+                    {
+                        <h2>Edition list</h2>
+                        
+                    }
+                </div>
+            </div>
+
+
+            @foreach (var item in Model.DataYearList)
+            {
+                <fieldset class=" p-2 mt-2 text-right">
+                    <legend style=" font-size:15px; width:40px;">
+                        @item.Year
+
+                    </legend>
+                    <div id="editions" class="float-left">
+                        @foreach (var edition in Model.DataEditionList.Where(x => x.IdYear == item.Id).OrderBy(x => x.Edition))
+                        {
+
+                            <a href="#" class="genric-btn primary-border circle " style="width:35px; text-align:center" data-select-edition data-idedition="@edition.Id">
+
+                                <span style="width:40px; text-align:center">
+                                    @edition.Edition
+                                
+
+                                </span>
+
+                            </a>
+
+                        }
+                    </div>
+                </fieldset>
+            }
+        </div>
+        <div class="col-md-9">
+            <div id="articles">
+
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="idedition" value="@ViewBag.idedition" />
+<script>
+    $(document).ready(function () {
+        if ($("#idedition").val() != "") {
+            $.ajax({
+                method: "POST",
+                url: '@Url.Action("Articles", "MetaData")',
+                data: { idedition: $("#idedition").val() },
+                success: function (content) {
+                    $('#articles').html(content);
+
+                }
+            });
+        }
+        else {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("LastArticles", "MetaData")",
+                success: function (content) {
+                    $('#articles').html(content);
+
+                }
+            });
+        }
+    });
+
+    $("[data-select-edition]").click(function () {
+
+        var x = document.getElementsByClassName("active");
+        var i;
+        for (i = 0; i < x.length; i++) {
+            x[i].classList.add("primary-border");
+            x[i].classList.remove("primary", "active");
+        }
+
+        $(this).removeClass("primary-border");
+        $(this).addClass("primary active");
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("Articles", "MetaData")",
+            data: { idedition: $(this).data('idedition') },
+            success: function (content) {
+                $('#articles').html(content);
+            }
+        });
+    });
+
+</script>

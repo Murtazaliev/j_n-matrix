@@ -1,0 +1,191 @@
+﻿@model IEnumerable<JournalNOEP_DOMAIN.Articles>
+
+<style>
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    span {
+        cursor: pointer
+    }
+
+    .modal {
+        position: fixed;
+        width: 800px;
+        top: -100%;
+        padding: 20px;
+        background: #fff;
+        border: 1px solid #333;
+        z-index: 9999;
+        transition: all 0.5s ease-in;
+
+    }
+
+    .overflow {
+        width: 100%;
+        height: 100%;
+        z-index: 9998;
+        background: rgba(0,0,0,0.7);
+        position: fixed;
+        min-height: 1080px;
+        top: 0;
+    }
+
+    .gradeX {
+        cursor: pointer;
+    }
+    .myClass:hover {
+    background-color:#f3f3f3;
+    }
+</style>
+
+
+
+
+<div class="modal">
+
+</div>
+
+
+<div class="  mg-t-90">
+
+    <div class=" tx-white">
+        <div class="row align-baseline" style="height:50px; padding-bottom:5px; ">
+            <div class="col-md-9 pt-4">
+                  @if ( MainViewModel.Language  != "EN")
+                {
+                    <h3>  Выпуск №@ViewBag.EditionNumber, @ViewBag.EditionYear г. </h3>
+                }
+                else
+                {
+                    <h3>  Edition №@ViewBag.EditionNumber, @ViewBag.EditionYear y. </h3>
+                }
+            </div>
+            <div class="col-md-3 pt-2">
+                @{if (ViewBag.EditionFile != null)
+                    {
+                        <a target="_blank" href="http://админ.авсэ.рф/Files/EditionFiles/@ViewBag.EditionFile" style=" text-align:center; float:right"
+                           class="genric-btn primary circle arrow pl-3 pr-3 pt-2 pb-2">
+                            Весь выпуск &nbsp;
+                            <i class="fa fa-file-pdf-o pd-b-0 float-left"></i>
+                            <span class="lnr lnr-arrow-right">
+                            </span>
+                        </a>
+                    }
+
+                }
+            </div>
+        </div>
+    </div>
+    <div id="art" class="row">
+
+
+
+
+
+        <!-- Start menu-list Area -->
+        <section class=" section-gap"  style="width:98%">
+            <div class="">
+
+                <div id="pills-tabContent" class="tab-content absolute pl-2" style="width:100%; ">
+
+
+
+
+                    @foreach (var item in Model.OrderBy(x => x.ArtPos))
+                    {
+
+                        <div class="single-menu-list row justify-content-between align-items-center myClass" style="width:100%;">
+                          
+                            
+
+                            <h4>@item.ArtName</h4>
+                            <div class="col-12">
+                                <i>
+                                    @foreach (var item1 in item.DataArticleAuthors)
+                                    {
+                                        @item1.Author.AuthFio;
+                                    }
+                                </i>
+                            </div>
+                            <div class="mt-2">
+                                @item.ArtAnnotation
+                            </div>
+                            <br />
+                            <div class="col-9 float-right">
+                                <i>
+                                    @if (item.ArtKeywords != null)
+                                    {
+                                        @if (item.ArtKeywords.Length != 0)
+                                        {
+                                            <span>   Ключевые слова: @item.ArtKeywords</span>
+                                        }
+                                    }
+                                </i>
+                            </div>
+
+
+                            <h4 class="mt-20">@item.ArtNameEng</h4>
+
+                            <i>
+                                @foreach (var item2 in item.DataArticleAuthors)
+                                {
+                                    @item2.Author.AuthFioEng;
+                                }
+                            </i>
+                            <div class="mt-2">
+                                @item.ArtAnnotationEng
+                            </div>
+                            <br />
+                            <div class="col-9 float-right">
+                                <i>
+                                    @if (item.ArtKeywordsEng != null)
+                                    {
+                                        @if (item.ArtKeywordsEng.Length != 0)
+                                        {
+                                            <span>   Keywords: @item.ArtKeywordsEng</span>
+                                        }
+                                    }
+                                </i>
+                            </div>
+                            <div class="text-rigth col-12">
+                                <a target="_blank" href="http://админ.авсэ.рф/Files/ArticleFiles/@item.ArtFile"> Открыть файл <i class="fa fa-file-pdf-o pd-b-0"></i></a>
+                            </div>
+                            </div>
+                            }
+
+                        </div>
+
+                    </div>
+        </section>
+        <!-- End menu-list Area -->
+
+    </div>
+</div>
+<script>
+
+
+
+
+    var modal = document.querySelector('.modal');
+    var overflow = document.createElement('div');
+
+
+
+
+
+    if (!Element.prototype.remove) {
+        Element.prototype.remove = function remove() {
+            if (this.parentNode) {
+                this.parentNode.removeChild(this);
+            }
+        };
+    }
+
+    overflow.onclick = function () {
+        modal.style.top = "-100%";
+        overflow.remove();
+        $('.modal').hide();
+}
+</script>

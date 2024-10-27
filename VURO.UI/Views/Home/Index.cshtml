@@ -1,0 +1,105 @@
+﻿@model MainViewModel
+@{
+    Layout = "_Layout";
+}
+
+
+<style>
+    #qrCode {
+        width: 150px !important;
+        height: 150px !important;
+        margin-top: 0px !important;
+        margin-left: 0px !important;
+        position:relative  !important;
+        left:0  !important;
+        top:0  !important;
+    }
+</style>
+
+
+<!-- BANNER -->
+<div id="slides" class="section banner">
+    <ul class="slides-container">
+        <li>
+            <img src="~/images/back.jpg"  alt=""/>
+            <div class="overlay-bg"></div>
+            <div class="container">
+                <div class="wrap-caption">
+                    <p  class="excerpt text-uppercase">Международный электронный научный журнал</p>
+                    <h2 class="caption-heading" style="font-size:55px;">
+                        НАУЧНАЯ МАТРИЦА
+                    </h2>
+                    <p class="excerpt box-vision">Свидетельство о регистрации средства массовой информации Федеральной службой по надзору в сфере информационных технологий и массовых коммуникаций</p>
+                    <a asp-action="Index" asp-controller="Editions" class="btn btn-secondary text-uppercase">Последний выпуск</a>
+                    <a style="margin-top:80px; margin-left:30px;" href="http://qrcoder.ru" target="_blank">
+
+                        <img id="qrCode" src="http://qrcoder.ru/code/?http%3A%2F%2Fnmatrix.ru%2F&4&0" title="QR код">
+                    </a>
+
+                </div>
+            </div>
+        </li>
+
+    </ul>
+
+    <nav class="slides-navigation">
+        <div class="container">
+            <a href="#" class="next">
+                <i class="fa fa-chevron-right"></i>
+            </a>
+            <a href="#" class="prev">
+                <i class="fa fa-chevron-left"></i>
+            </a>
+        </div>
+    </nav>
+
+</div>
+
+
+
+
+@foreach (var item in Model.DataInfoList)
+{
+    if (item.IsSectionOnMainPage == true)
+    {
+        <section class="boxed">
+            <div class="container">
+                <div class="row">
+                    <div class="about-video-left">
+                        @if (MainViewModel.Language != "EN")
+                        {
+                            <div class="text-center" style="text-transform: uppercase;">
+                                <h2 class="title-with-sub"><span class="color-theme"><i class="fa fa-book"></i> @item.InfoNameRu</span></h2>
+                            </div>
+
+                            <label>
+                                @Html.Raw(item.InfoTextRu)
+                            </label>
+
+                        }
+                        else
+                        {
+                            <div class="text-center" style="text-transform: uppercase; ">
+                                <h2 class="title-with-sub"><span class="color-theme"><i class="fa fa-book"></i> @item.InfoNameEn</span></h2>
+                            </div>
+                            <label>
+                                @Html.Raw(item.InfoTextEn)
+                            </label>
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    }
+}
+@section Scripts
+{
+    <script>
+        function openModal() {
+
+            $('#myModal').modal('show');
+
+        }
+    </script>
+}

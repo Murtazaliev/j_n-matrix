@@ -1,0 +1,218 @@
+﻿@model IEnumerable<JournalNOEP_DOMAIN.DataConferenceArticle>
+
+
+<div id="modDialogArticle" class="modal fade p-0"></div>
+@{ int i = 0; }
+<div class="card border-secondary mg-t-100">
+    <div class="card-header bg-primary tx-white" style="margin-top:-100px">
+        <div class="row align-baseline">
+            <div class="col-md-9 pt-2">
+                Конференция №@ViewBag.EditionNumber, @ViewBag.EditionYear г.
+
+                <a href="#" data-idedition="@ViewBag.IdEdition" data-toggle="modal" data-target="#dialogContent" data-edit-edition>
+                    <i class="fa fa-edit p-2 text-secondary"></i>
+                </a>
+
+                <a href="#" data-idedition="@ViewBag.IdEdition" data-toggle="modal" data-target="#dialogContent" data-remove-edition>
+                    <i class="fa fa-remove text-danger p-2"></i>
+                </a>
+
+            </div>
+            
+            <div class="col-md-3 text-right">
+                <a href="#" class="btn btn-outline-secondary" data-toggle="modal" data-target="#dialogContent" data-idedition="@ViewBag.IdEdition" data-edit-article>
+                    <i class="fa fa-plus mg-r-10"></i>
+                    Добавить
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper">
+            <div class="row mg-t-20  btn input-group p-0" style="margin-bottom:-15px;">
+                <div class="col-md-12 input-group p-2 pd-b-0 align-baseline">
+                    <i class="fa fa-2x fa-file-pdf-o pd-b-0"></i>
+                    <h3 class=" pd-b-0">PDF</h3>
+                    @{if (ViewBag.EditionFile == null)
+                        {
+                            <a href="#" data-idedition="@ViewBag.IdEdition" class="btn-outline-primary btn-icon btn-sm p-0 mg-l-5" data-toggle="modal" data-target="#dialogContent" data-edit-edition-file>
+                                <div>
+                                    <i class="fa fa-plus"></i>
+                                </div>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="#" data-idedition="@ViewBag.IdEdition" class="btn-outline-warning btn-icon btn-sm p-0 mg-l-5" data-toggle="modal" data-target="#dialogContent" data-show-edition-file>
+                                <div>
+                                    <i class="fa fa-window-restore"></i>
+                                </div>
+                            </a>
+                            <a href="#" data-idedition="@ViewBag.IdEdition" class="btn-outline-primary btn-icon btn-sm p-0 mg-l-5" data-toggle="modal" data-target="#dialogContent" data-edit-edition-file>
+                                <div>
+                                    <i class="fa fa-edit"></i>
+                                </div>
+                            </a>
+                            <a href="#" data-idedition="@ViewBag.IdEdition" class="btn-outline-danger btn-icon btn-sm p-0 mg-l-5" data-toggle="modal" data-target="#dialogContent" data-remove-edition-file>
+                                <div>
+                                    <i class="fa fa-remove"></i>
+                                </div>
+                            </a>
+                        }
+                    }
+                </div>
+                </div>
+            <hr />
+                <table id="datatable1" class="table display responsive mg-t-10">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>УДК</th>
+                            <th>Название</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="gradeX">
+                                <td>
+                                    @(i = i + 1)
+                                </td>
+                                <td>
+                                    <b>
+                                        UDK:@item.ArtUdk
+                                    </b>
+                                </td>
+                                <td>
+                                    @item.ArtName
+                                    <br /> 
+                                    <ion-icon name="person"></ion-icon>
+                                    @foreach (var author in @item.DataConferenceArticleAuthors.OrderBy(x=>x.AuthorPos))
+                                    {
+                                        <i style="font-size:12px;">@author.SprJoiurnalAuthors.AuthFio; </i>
+                                    }
+                                </td>
+                                <td style="width:157px">
+                                    <a href="#" class="btn btn-outline-primary btn-icon mg-r-5" data-idarticle="@item.Id" data-edit-article-file>
+                                        <div>
+                                            <i class="icon ion-document-text"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-primary btn-icon mg-r-5" data-idarticle="@item.Id" data-idedition="@item.DataConferenceEditionId" data-edit-article>
+                                        <div>
+                                            <i class="icon ion-edit"></i>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-danger btn-icon mg-r-5" data-remove-article data-idarticle="@item.Id">
+                                        <div>
+                                            <i class="icon ion-trash-a"></i>
+                                        </div>
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+<script>
+
+    $('[data-edit-edition]').click(function () {
+        $.ajax({
+            method: "POST",
+             url: "@Url.Action("PartialEditEdition", "Conference")",
+            data: { IdEdition: $(this).data('idedition') },
+
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+    $('[data-remove-edition]').click(function () {
+        $.ajax({
+            method: "POST",
+             url: "@Url.Action("PartialRemoveEdition", "Conference")",
+            data: { IdEdition: $(this).data('idedition') },
+
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+    $('[data-edit-article]').click(function () {
+        $.ajax({
+            method: "POST",
+            url: "@Url.Action("PartialEditArticle", "Conference")",
+            data: { Id: $(this).data('idarticle'), IdEdition: $(this).data('idedition') },
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+    $('[ data-edit-article-file]').click(function () {
+        $.ajax({
+            method: "POST",
+             url: "@Url.Action("PartialEditArticleFile", "Conference")",
+            data: { Id: $(this).data('idarticle') },
+
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+    $('[ data-edit-edition-file]').click(function () {
+        $.ajax({
+            method: "POST",
+             url: "@Url.Action("PartialEditEditionFile", "Conference")",
+            data: { Id: $(this).data('idedition') },
+
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+    $('[data-show-edition-file]').click(function () {
+        $.ajax({
+            method: "POST",
+             url: "@Url.Action("PartialShowFiles", "Conference")",
+            data: { id: $(this).data('idedition') },
+
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+    $('[data-remove-edition-file]').click(function () {
+        $.ajax({
+            method: "POST",
+             url: "@Url.Action("PartialRemoveEditionFile", "Conference")",
+            data: { id: $(this).data('idedition') },
+
+            success: function (content) {
+                $('#modDialogArticle').html(content);
+                $('#modDialogArticle').modal('show');
+            }
+        });
+    });
+            $('[data-remove-article]').click(function (e) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("PartialRemoveArticle", "Conference")",
+                data: { Id : $(this).data('idarticle') },
+            success: function (content) {
+                $('#modDialog').html(content);
+                $('#modDialog').modal('show');
+            }
+        });
+    });
+
+</script>

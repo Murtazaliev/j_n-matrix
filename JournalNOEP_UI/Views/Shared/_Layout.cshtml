@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Администратор журнала</title>
+    <!-- Vendor css -->
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/lib/Ionicons/css/ionicons.css" rel="stylesheet">
+    <link href="~/lib/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet">
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/spectrum/spectrum.css" rel="stylesheet">
+    <!-- Shamcey CSS -->
+    <link href="~/css/shamcey.css" rel="stylesheet">
+    <link href="~/css/site.css" rel="stylesheet" />
+    <style>
+        .was-validated .custom-file-input:valid ~ .custom-file-control, .custom-file-input.is-valid ~ .custom-file-control, input.custom-file-input.parsley-success ~ .custom-file-control,
+        textarea.custom-file-input.parsley-success ~ .custom-file-control {
+            border-color: #23BF08;
+        }
+
+            .was-validated .custom-file-input:valid ~ .custom-file-control::before, .custom-file-input.is-valid ~ .custom-file-control::before, input.custom-file-input.parsley-success ~ .custom-file-control::before,
+            textarea.custom-file-input.parsley-success ~ .custom-file-control::before {
+                border-color: inherit;
+            }
+
+        .was-validated .custom-file-input:valid:focus, .custom-file-input.is-valid:focus, input.custom-file-input.parsley-success:focus,
+        textarea.custom-file-input.parsley-success:focus {
+            box-shadow: 0 0 0 0.2rem rgba(35, 191, 8, 0.25);
+        }
+
+        .custom-file-control {
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 5;
+            height: 2.5rem;
+            padding: 0.5rem 1rem;
+            line-height: 1.5;
+            color: #495057;
+            pointer-events: none;
+            user-select: none;
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.15);
+            border-radius: 3px;
+        }
+
+            .custom-file-control:lang(en):empty::after {
+                content: "Choose file...";
+            }
+
+            .custom-file-control::before {
+                position: absolute;
+                top: -1px;
+                right: -1px;
+                bottom: -1px;
+                z-index: 6;
+                display: block;
+                height: 2.5rem;
+                padding: 0.5rem 1rem;
+                line-height: 1.5;
+                color: #495057;
+                background-color: #e9ecef;
+                border: 1px solid rgba(0, 0, 0, 0.15);
+                border-radius: 0 3px 3px 0;
+            }
+
+            .custom-file-control:lang(en)::before {
+                content: "Browse";
+            }
+
+        .custom-file {
+            direction: ltr;
+        }
+
+        .custom-file-control, .custom-file-control::before {
+            border-radius: 0;
+        }
+
+        .custom-file-control-primary::before {
+            background-color: #0866C6;
+            color: #fff;
+        }
+
+        .custom-file-control-inverse::before {
+            background-color: #343a40;
+            color: #fff;
+        }
+    </style>
+    <script src="~/lib/jquery/jquery.js"></script>
+</head>
+<body>
+    <div class="sh-pagebody">
+        <div class="sh-headpanel">
+            <div class="sh-headpanel-left">
+                <!-- START: HIDDEN IN MOBILE -->
+                <a asp-action="Index" asp-controller="Journal" class="sh-icon-link">
+                    <div>
+                        <i class="icon ion-ios-book-outline"></i>
+                        <span>Журнал</span>
+                    </div>
+                </a> 
+            <a asp-action="Index" asp-controller="Conference" class="sh-icon-link">
+                    <div>
+                        <i class="icon ion-android-people"></i>
+                        <span>Конференции</span>
+                    </div>
+                </a>
+                <a asp-action="Authors" asp-controller="Reference" class="sh-icon-link">
+                    <div>
+                        <i class="icon ion-ios-people-outline"></i>
+                        <span>Авторы</span>
+                    </div>
+                </a>
+                <a asp-action="Section" asp-controller="Reference" class="sh-icon-link">
+                    <div>
+                        <i class="icon ion-ios-albums-outline"></i>
+                        <span>Разделы</span>
+                    </div>
+                </a>
+                <a asp-action="Index" asp-controller="Info" class="sh-icon-link">
+                    <div>
+                        <i class="icon ion-information"></i>
+                        <span>Информация</span>
+                    </div>
+                </a>
+                <!-- END: HIDDEN IN MOBILE -->
+
+
+
+
+            </div><!-- sh-headpanel-left -->
+            <!-- sh-headpanel-right -->
+            <div class="sh-headpanel-right text-white">
+                <partial name="_LoginPartial" />
+            </div>
+        </div><!-- sh-headpanel -->
+
+            <div class="sh-mainpanel">
+                <div id="content">
+                    <main role="main" class="pb-3">
+                        @RenderBody()
+                    </main>
+                </div>
+            </div>
+            <footer>
+                <p class="text-center">
+                    &copy; @DateTime.Now.Year   - Администратор журнала
+                </p>
+            </footer>
+        </div>
+        <script src="~/lib/popper.js/popper.js"></script>
+        <script src="~/lib/bootstrap/bootstrap.js"></script>
+        <script src="~/lib/jquery-ui/jquery-ui.js"></script>
+        <script src="~/lib/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+        <script src="~/lib/moment/moment.js"></script>
+
+        <script src="~/js/shamcey.js"></script>
+        @RenderSection("Scripts", required: false)
+
+</body>
+</html>

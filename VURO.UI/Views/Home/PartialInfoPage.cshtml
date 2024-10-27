@@ -1,0 +1,59 @@
+﻿@model MainViewModel
+
+
+<br>
+@if (@Model.DataInfo.Id != Guid.Parse("11111111-1111-1111-1111-111111111111")) 
+{
+    <button type="button" class="btn btn-secondary pull-right" style="margin-right:25px" onclick="printSubsidy('@Model.DataInfo.Id')">Распечатать <i class="fa fa-print"></i></button>
+}
+<section class="boxed">
+
+    <div style="padding:0px 100px;">
+        <div class="about-video-left">
+            @if (MainViewModel.Language != "EN")
+            {
+                <div class="text-center" style="text-transform:uppercase;">
+                    <h4 class="title-with-sub"><span class="color-theme"><i class="fa fa-book"></i> @Model.DataInfo.InfoNameRu</span></h4>
+                </div>
+
+                    @Html.Raw(Model.DataInfo.InfoTextRu)
+
+
+            }
+            else
+            {
+                <div class="text-center" style="text-transform:uppercase;">
+                    <h4 class="title-with-sub"><span class="color-theme"><i class="fa fa-book"></i> @Model.DataInfo.InfoNameEn</span></h4>
+                </div>
+
+                    @Html.Raw(Model.DataInfo.InfoTextEn)
+      
+            }
+        </div>
+
+    </div>
+
+</section>
+<script>
+
+    function printSubsidy(id) {
+
+        $.ajax({
+            type: 'POST',
+            data: { infoId:id },
+            url: '@Url.Action("PrintInfo", "Home")',
+            success: function (data) {
+
+                $('body').addClass('printSelected'); //добавляем класс <body>
+                $('body').append("<div class='printSelection'></div>"); //создаем "призрачный" блок для печати
+                $('.printSelection').append(data);  // вставляем в блок то, что нужно вывести на печать (в данном случае лишь картинку)
+                window.print(); // выводи на печать
+                window.setTimeout(pageCleaner, 0); // затираем следы
+            }
+        });
+    }
+    function pageCleaner() {
+    $('body').removeClass('printSelected');
+    $('.printSelection').remove();
+};
+</script>

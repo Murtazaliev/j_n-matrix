@@ -1,0 +1,66 @@
+﻿@model MainViewModel
+<div class="modal-header" style="height: 50px;">
+    <h5 class="modal-title text-uppercase" style="float: left;" id="exampleModalLongTitle">Метаданные</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row pt-30">
+        <div class="col-md-4">
+            <div class="portfolio-meta">
+                <ul>
+                    @foreach (var item in Model.DataArticleAuthorsList)
+                    {
+                        <li><i class="fa fa-user"></i><span>@item.Author.AuthFio</span>@item.Author.AuthRegal</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="project-desc">
+                <h3>@Model.Article.ArtName</h3>
+                <p>@Model.Article.ArtAnnotation</p>
+            </div>
+            <div class="post-share">
+                <ul>
+                    
+                    <li>@Model.Article.ArtKeywords</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row pt-30">
+        <div class="col-md-4">
+            <div class="portfolio-meta">
+                <ul>
+                    @foreach (var item in Model.DataArticleAuthorsList)
+                    {
+                        <li><i class="fa fa-user"></i><span>@item.Author.AuthFioEng</span>@item.Author.AuthRegalEng</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="project-desc">
+                <h3>@Model.Article.ArtNameEng</h3>
+                <p>@Model.Article.ArtAnnotationEng</p>
+            </div>
+            <div class="post-share">
+                <ul>
+                    
+                    <li>@Model.Article.ArtKeywordsEng</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+ 
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+    <a target="_blank" href="http://admin.nmatrix.ru/Files/ArticleFiles/@Model.Article.ArtFile" class="btn btn-warning"> Открыть файл <i class="fa fa-file-pdf-o pd-b-0 float-left"></i></a>
+</div>
